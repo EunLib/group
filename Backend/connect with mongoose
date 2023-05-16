@@ -1,0 +1,56 @@
+const express = require("express");
+const app = express();
+const mongoose = require("mongoose");
+
+// Mongoose Connection with mongoDB
+// created a connection using name db 'userData'
+mongoose.set('strictQuery',true);
+mongoose.connect("mongodb+srv://gouravtailor:gouravtailor@merntest.cbyv9p4.mongodb.net/userD")
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connetcion error'));
+db.once('open', function() {
+    console.log("Connected to MongoDB");
+});
+
+// schmea generation step
+// Importing model with collection schemas
+// {sales} --> 'sales' collection , {authData} --> 'auths' collection from 'userData' database
+const {sales} = require('./model/sales');
+const {authData} = require('./model/authData');
+
+// Express app endpoints
+// Routes from server
+
+app.use(express.static('public'));
+// app.post('/login', authenticateUser,(req,res) => {
+// res.send(req,user);    
+// });
+
+// 'sales' collection from 'userData' API for GET call
+app.get('/sales/:id', function(req, res)
+    if(req.params['id'] === 'full'){
+        sales.find({},{_id: 0,date: 1,item: 1,price: 1,quantity: 1},function (err,data) {
+            if (err) return console.error(err);
+        res.json(data);
+    });
+    }
+    else{
+        sales.find({_id: req.params['id']},{_id: 0,date: 1,item: 1,price: 1,quantity: 1 },function)
+          if(err) return console.error(err);
+          res.json(data);
+        });
+    }
+
+});
+
+// 'auths' collection from 'userData' API for GET call
+app.get('/authData/:id', fuction (req, res) {
+    if(req.params['id'] === 'full'){
+        authData.find({},{_id: 0,username: 1,password: 1},function (err, data) {
+            if(err) return console.error(err);
+        })
+    }
+})
+else{
+    authData.find({_id: req.params['id']},{_id: })
+}
